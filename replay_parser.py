@@ -10,8 +10,10 @@ MP_MOVES = [ButtonCombo.MP_PRESS, ButtonCombo.MP_HOLD, ButtonCombo.MP_RELEASE]
 MK_MOVES = [ButtonCombo.MK_PRESS, ButtonCombo.MK_HOLD, ButtonCombo.MK_RELEASE]
 HP_MOVES = [ButtonCombo.HP_PRESS, ButtonCombo.HP_HOLD, ButtonCombo.HP_RELEASE]
 HK_MOVES = [ButtonCombo.HK_PRESS, ButtonCombo.HK_HOLD, ButtonCombo.HK_RELEASE]
+P_DASH_MOVES = [ButtonCombo.P_DASH_PRESS, ButtonCombo.P_DASH_HOLD, ButtonCombo.P_DASH_RELEASE]
+K_DASH_MOVES = [ButtonCombo.K_DASH_PRESS, ButtonCombo.K_DASH_HOLD, ButtonCombo.K_DASH_RELEASE]
 
-ALL_MOVE_LISTS = [LP_MOVES, LK_MOVES, MP_MOVES, MK_MOVES, HP_MOVES, HK_MOVES]
+ALL_MOVE_LISTS = [LP_MOVES, LK_MOVES, MP_MOVES, MK_MOVES, HP_MOVES, HK_MOVES, P_DASH_MOVES, K_DASH_MOVES]
 
 def clean_combos(combos_list):
   return list(filter(lambda c: all([
@@ -29,14 +31,6 @@ EXCLUDED_MOVES = [
   ButtonCombo.THROW_PRESS,
   ButtonCombo.THROW_HOLD,
   ButtonCombo.THROW_RELEASE,
-
-  ButtonCombo.P_DASH_PRESS,
-  ButtonCombo.P_DASH_HOLD,
-  ButtonCombo.P_DASH_RELEASE,
-
-  ButtonCombo.K_DASH_PRESS,
-  ButtonCombo.K_DASH_HOLD,
-  ButtonCombo.K_DASH_RELEASE,
 ]
 
 # 2-move combos
