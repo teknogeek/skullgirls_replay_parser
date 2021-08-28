@@ -30,13 +30,13 @@ EXCLUDED_MOVES = [
   ButtonCombo.THROW_HOLD,
   ButtonCombo.THROW_RELEASE,
 
-  ButtonCombo.P_MOD_PRESS,
-  ButtonCombo.P_MOD_HOLD,
-  ButtonCombo.P_MOD_RELEASE,
+  ButtonCombo.P_DASH_PRESS,
+  ButtonCombo.P_DASH_HOLD,
+  ButtonCombo.P_DASH_RELEASE,
 
-  ButtonCombo.K_MOD_PRESS,
-  ButtonCombo.K_MOD_HOLD,
-  ButtonCombo.K_MOD_RELEASE,
+  ButtonCombo.K_DASH_PRESS,
+  ButtonCombo.K_DASH_HOLD,
+  ButtonCombo.K_DASH_RELEASE,
 ]
 
 # 2-move combos
