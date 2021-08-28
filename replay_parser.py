@@ -2,16 +2,14 @@ from itertools import combinations
 from functools import reduce
 import argparse
 
-from models import Move, Direction
+from models import ButtonCombo, Direction, RND_MAGIC
 
-RND_MAGIC = b'\x31\x30\x02'
-
-LP_MOVES = [Move.LP_PRESS, Move.LP_HOLD, Move.LP_RELEASE]
-LK_MOVES = [Move.LK_PRESS, Move.LK_HOLD, Move.LK_RELEASE]
-MP_MOVES = [Move.MP_PRESS, Move.MP_HOLD, Move.MP_RELEASE]
-MK_MOVES = [Move.MK_PRESS, Move.MK_HOLD, Move.MK_RELEASE]
-HP_MOVES = [Move.HP_PRESS, Move.HP_HOLD, Move.HP_RELEASE]
-HK_MOVES = [Move.HK_PRESS, Move.HK_HOLD, Move.HK_RELEASE]
+LP_MOVES = [ButtonCombo.LP_PRESS, ButtonCombo.LP_HOLD, ButtonCombo.LP_RELEASE]
+LK_MOVES = [ButtonCombo.LK_PRESS, ButtonCombo.LK_HOLD, ButtonCombo.LK_RELEASE]
+MP_MOVES = [ButtonCombo.MP_PRESS, ButtonCombo.MP_HOLD, ButtonCombo.MP_RELEASE]
+MK_MOVES = [ButtonCombo.MK_PRESS, ButtonCombo.MK_HOLD, ButtonCombo.MK_RELEASE]
+HP_MOVES = [ButtonCombo.HP_PRESS, ButtonCombo.HP_HOLD, ButtonCombo.HP_RELEASE]
+HK_MOVES = [ButtonCombo.HK_PRESS, ButtonCombo.HK_HOLD, ButtonCombo.HK_RELEASE]
 
 ALL_MOVE_LISTS = [LP_MOVES, LK_MOVES, MP_MOVES, MK_MOVES, HP_MOVES, HK_MOVES]
 
@@ -23,30 +21,31 @@ def clean_combos(combos_list):
       ]
     ]), combos_list))
 
-EXCLUDED_MOVES = [Move.UNKNOWN, Move.NEUTRAL, Move.THROW_PRESS, Move.THROW_HOLD, Move.THROW_RELEASE]
-ALL_MOVE_COMBOS = {(c1 & c2): [c1, c2] for c1, c2 in clean_combos(combinations([m for m in Move if m not in EXCLUDED_MOVES], 2))}
-for c1, c2, c3 in clean_combos(combinations([m for m in Move if m not in EXCLUDED_MOVES], 3)):
-  # (c1 & c2) (buttons 1 and 2) returns a tuple
-  # therefore we have to map generic (x & y) to a zip of:
-  #     - each element of the resulting tuple of (c1 & c2)
-  #     - with each element of the raw c3 (the 3rd button) move raw tuple (Move.value)
-  and_res = tuple(map(lambda x: x[0] & x[1], zip(c1 & c2, c3.value)))
-  ALL_MOVE_COMBOS[and_res] = [c1, c2, c3]
+ALL_MOVE_COMBOS = {}
+EXCLUDED_MOVES = [ButtonCombo.UNKNOWN, ButtonCombo.NEUTRAL, ButtonCombo.THROW_PRESS, ButtonCombo.THROW_HOLD, ButtonCombo.THROW_RELEASE]
+
+# 2-move combos
+for c1, c2 in clean_combos(combinations([m for m in ButtonCombo if m not in EXCLUDED_MOVES], 2)):
+  ALL_MOVE_COMBOS[(c1 & c2)] = [c1, c2]
+
+# 3-move combos
+for c1, c2, c3 in clean_combos(combinations([m for m in ButtonCombo if m not in EXCLUDED_MOVES], 3)):
+  ALL_MOVE_COMBOS[(c1 & c2 & c3)] = [c1, c2, c3]
 
 
 
 PUNCH_TO_KICK_MAPPING = {
-  Move.LP_PRESS: Move.LK_PRESS,
-  Move.LP_HOLD: Move.LK_HOLD,
-  Move.LP_RELEASE: Move.LK_RELEASE,
+  ButtonCombo.LP_PRESS: ButtonCombo.LK_PRESS,
+  ButtonCombo.LP_HOLD: ButtonCombo.LK_HOLD,
+  ButtonCombo.LP_RELEASE: ButtonCombo.LK_RELEASE,
 
-  Move.MP_PRESS: Move.MK_PRESS,
-  Move.MP_HOLD: Move.MK_HOLD,
-  Move.MP_RELEASE: Move.MK_RELEASE,
+  ButtonCombo.MP_PRESS: ButtonCombo.MK_PRESS,
+  ButtonCombo.MP_HOLD: ButtonCombo.MK_HOLD,
+  ButtonCombo.MP_RELEASE: ButtonCombo.MK_RELEASE,
 
-  Move.HP_PRESS: Move.HK_PRESS,
-  Move.HP_HOLD: Move.HK_HOLD,
-  Move.HP_RELEASE: Move.HK_RELEASE,
+  ButtonCombo.HP_PRESS: ButtonCombo.HK_PRESS,
+  ButtonCombo.HP_HOLD: ButtonCombo.HK_HOLD,
+  ButtonCombo.HP_RELEASE: ButtonCombo.HK_RELEASE,
 }
 
 
@@ -61,7 +60,7 @@ def read_data(replay_filename: str, ini_filename: str, replace_punches=False):
   print(f'Players: {", ".join(player_list)}')
 
   move_data = replay_data.split(b'\n\nGGPO log:')[0]
-  print(len(move_data))
+
   player_idx = 0
   frame_idx = 0
   output_frames = 0
@@ -75,7 +74,7 @@ def read_data(replay_filename: str, ini_filename: str, replace_punches=False):
       continue
 
     moves = calc_moves((button_1, button_2, button_3))
-    if moves[0] == Move.UNKNOWN:
+    if moves[0] == ButtonCombo.UNKNOWN:
       moves = calc_moves((button_1, button_2, 0xFF))
 
     player_idx = (player_idx + 1)
@@ -88,7 +87,7 @@ def read_data(replay_filename: str, ini_filename: str, replace_punches=False):
     player_idx %= 2
 
     # TODO: remove all unknowns
-    if moves[0] == Move.UNKNOWN:
+    if moves[0] == ButtonCombo.UNKNOWN:
       # print(f'[-] Unknown move: (0x{button_1:02X}, 0x{button_2:02X}, 0x{button_3:02X})')
       continue
 
@@ -108,14 +107,14 @@ def read_data(replay_filename: str, ini_filename: str, replace_punches=False):
 
 def calc_moves(move_tuple):
   try:
-    return [Move(move_tuple)]
+    return [ButtonCombo(move_tuple)]
   except ValueError:
     pass
 
   if move_tuple in ALL_MOVE_COMBOS:
     return ALL_MOVE_COMBOS[move_tuple]
 
-  return [Move.UNKNOWN]
+  return [ButtonCombo.UNKNOWN]
 
 
 def main():
