@@ -7,39 +7,43 @@ class GenericButtonCombo(tuple):
   def __and__(self, o) -> tuple:
     if not isinstance(o, (tuple, ButtonCombo, GenericButtonCombo)):
       raise TypeError(f'invalid type for GenericButtonCombo AND: {type(o)}')
-    return GenericButtonCombo(map(lambda x: x[0] & x[1], zip(self, o.value)))
+    o_tuple = o.value if isinstance(o, ButtonCombo) else o
+    return GenericButtonCombo(map(lambda x: x[0] & x[1], zip(self, o_tuple)))
 
 class ButtonCombo(Enum):
-  LP_PRESS = (0x3F, 0xFC, 0xFF)
-  LP_HOLD = (0xBF, 0xFE, 0xFF)
-  LP_RELEASE = (0x7F, 0xFD, 0xFF)
+  LP_PRESS      = (0b00111111,0b11111100,0b11111111)
+  MP_PRESS      = (0b11001111,0b11111100,0b11111111)
+  HP_PRESS      = (0b11110011,0b11111100,0b11111111)
+  LK_PRESS      = (0b11111100,0b11110011,0b11111111)
+  MK_PRESS      = (0b11111111,0b00110011,0b11111111)
+  HK_PRESS      = (0b11111111,0b11000011,0b11111111)
+  P_MOD_PRESS   = (0b11111111,0b11111111,0b11001111)
+  K_MOD_PRESS   = (0b11111111,0b11111111,0b00111111)
 
-  MP_PRESS = (0xCF, 0xFC, 0xFF)
-  MP_HOLD = (0xEF, 0xFE, 0xFF)
-  MP_RELEASE = (0xDF, 0xFD, 0xFF)
+  LP_HOLD       = (0b10111111,0b11111110,0b11111111)
+  MP_HOLD       = (0b11101111,0b11111110,0b11111111)
+  HP_HOLD       = (0b11111011,0b11111110,0b11111111)
+  LK_HOLD       = (0b11111110,0b11111011,0b11111111)
+  MK_HOLD       = (0b11111111,0b10111011,0b11111111)
+  HK_HOLD       = (0b11111111,0b11101011,0b11111111)
+  P_MOD_HOLD    = (0b11111111,0b11111111,0b11101111)
+  K_MOD_HOLD    = (0b11111111,0b11111111,0b10111111)
 
-  HP_PRESS = (0xF3, 0xFC, 0xFF)
-  HP_HOLD = (0xFB, 0xFE, 0xFF)
-  HP_RELEASE = (0xF7, 0xFD, 0xFF)
+  LP_RELEASE    = (0b01111111,0b11111101,0b11111111)
+  MP_RELEASE    = (0b11011111,0b11111101,0b11111111)
+  HP_RELEASE    = (0b11110111,0b11111101,0b11111111)
+  LK_RELEASE    = (0b11111101,0b11110111,0b11111111)
+  MK_RELEASE    = (0b11111111,0b01110111,0b11111111)
+  HK_RELEASE    = (0b11111111,0b11010111,0b11111111)
+  P_MOD_RELEASE = (0b11111111,0b11111111,0b11011111)
+  K_MOD_RELEASE = (0b11111111,0b11111111,0b01111111)
 
-  LK_PRESS = (0xFC, 0xF3, 0xFF)
-  LK_HOLD = (0xFE, 0xFB, 0xFF)
-  LK_RELEASE = (0xFD, 0xF7, 0xFF)
+  THROW_PRESS   = (0b00111100,0b11110000,0b11111111)
+  THROW_HOLD    = (0b10111110,0b11111010,0b11111111)
+  THROW_RELEASE = (0b01111101,0b11110101,0b11111111)
 
-  MK_PRESS = (0xFF, 0x33, 0xFF)
-  MK_HOLD = (0xFF, 0xBB, 0xFF)
-  MK_RELEASE = (0xFF, 0x77, 0xFF)
-
-  HK_PRESS = (0xFF, 0xC3, 0xFF)
-  HK_HOLD = (0xFF, 0xEB, 0xFF)
-  HK_RELEASE = (0xFF, 0xD7, 0xFF)
-
-  THROW_PRESS = (0x3C, 0xF0, 0xFF)
-  THROW_HOLD = (0xBE, 0xFA, 0xFF)
-  THROW_RELEASE = (0x7D, 0xF5, 0xFF)
-
-  NEUTRAL = (0xFF, 0xFF, 0xFF)
-  UNKNOWN = (-1, -1, -1)
+  NEUTRAL       = (0b11111111,0b11111111,0b11111111)
+  UNKNOWN       = (-1, -1, -1)
 
   def __getitem__(self, item):
     if isinstance(item, (int, slice)):

@@ -63,15 +63,7 @@ LP+MP Hold:    AF FE EF ==> 1010 1111 X 1111 1110 X 1110 1111
 LP+HP Release: 5F FD DF ==> 0101 1111 X 1111 1101 X 1101 1111
 ```
 
-LK+MP+HK
-1110 1110 x 1110 1010 x 1011 1111
-1110 1110 x 1110 1010
-
-0xFEFB & 0xEFFE & 0xFFEB
-
-HOLD
-
-Same pattern used with kicks to specify press/hold/release (`00`/`10`/`01`), just in the third byte
+The same pattern is used with kicks to specify press/hold/release (`00`/`10`/`01`) in the third byte
 ```
 LK+MK Press:   FC 33 3F ==> 1111 1100 X 0011 0011 X 0011 1111
 LK+MK Hold:    FE BB BF ==> 1111 1110 X 1011 1011 X 1011 1111
