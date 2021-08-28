@@ -1,5 +1,5 @@
 from models.button_combo import ButtonCombo
-from models import Game, Move, Direction, Player, Fighter
+from models import Game, Move, Direction, Player, Fighter, FighterType
 
 def main():
   '''
@@ -11,11 +11,11 @@ def main():
     - end game
   '''
   player_one = Player(name='SilkTail', fighters=[
-    Fighter('Filia'), Fighter('RoboFortune'), Fighter('Double')
+    Fighter(FighterType.FILIA), Fighter(FighterType.ROBO_FORTUNE), Fighter(FighterType.DOUBLE)
   ])
 
   player_two = Player(name='Teknogeek', fighters=[
-    Fighter('Filia'), Fighter('Annie'), Fighter('Fukua')
+    Fighter(FighterType.FILIA), Fighter(FighterType.ANNIE), Fighter(FighterType.FUKUA)
   ])
 
   game = Game(player_one, player_two)

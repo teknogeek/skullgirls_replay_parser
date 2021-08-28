@@ -1,45 +1,8 @@
-from enum import Enum
 from .move import Move
+from .metadata import GameMetadata
 from struct import pack
 
 RND_MAGIC = b'\x31\x30\x02'
-
-class VoiceOption(Enum):
-  ENGLISH = 'EN'
-  JAPANESE = 'JP'
-  ALT = 'Alt'
-
-class Fighter:
-  name: str
-  color: int = 1
-  voice_option: VoiceOption = VoiceOption.ENGLISH
-  transition_number: int = 0
-
-  def __init__(self, name: str) -> None:
-    self.name = name
-
-class Player:
-  name: str
-  fighters: list[Fighter]
-
-  def __init__(self, name: str, fighters: list[Fighter]) -> None:
-    self.name = name
-    self.fighters = fighters
-
-class GameMetadata:
-  world = 'Maple_Crest'
-  num_rounds = 1
-  match_length = 99
-
-  RNG0: int = 284802
-  RNG1: int = -560138391
-
-  player_one: Player = None
-  player_two: Player = None
-
-  def __init__(self, player_one: Player, player_two: Player) -> None:
-    self.player_one = player_one
-    self.player_two = player_two
 
 class Game:
   moves: list[Move] = []
@@ -76,7 +39,7 @@ class Game:
     ini_lines.append('Player 1')
     for f in self.metadata.player_one.fighters:
       ini_lines += [
-        f'Fighter {f.name}',
+        f'Fighter {f.fighter_type.value}',
         f'Color {f.color}',
         f'TransitionNum {f.transition_number}',
         f'{f.voice_option.value}VO 1'
@@ -85,7 +48,7 @@ class Game:
     ini_lines.append('Player 2')
     for f in self.metadata.player_two.fighters:
       ini_lines += [
-        f'Fighter {f.name}',
+        f'Fighter {f.fighter_type.value}',
         f'Color {f.color}',
         f'TransitionNum {f.transition_number}',
         f'{f.voice_option.value}VO 1'
