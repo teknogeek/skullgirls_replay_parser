@@ -22,7 +22,22 @@ def clean_combos(combos_list):
     ]), combos_list))
 
 ALL_MOVE_COMBOS = {}
-EXCLUDED_MOVES = [ButtonCombo.UNKNOWN, ButtonCombo.NEUTRAL, ButtonCombo.THROW_PRESS, ButtonCombo.THROW_HOLD, ButtonCombo.THROW_RELEASE]
+EXCLUDED_MOVES = [
+  ButtonCombo.UNKNOWN,
+  ButtonCombo.NEUTRAL,
+
+  ButtonCombo.THROW_PRESS,
+  ButtonCombo.THROW_HOLD,
+  ButtonCombo.THROW_RELEASE,
+
+  ButtonCombo.P_MOD_PRESS,
+  ButtonCombo.P_MOD_HOLD,
+  ButtonCombo.P_MOD_RELEASE,
+
+  ButtonCombo.K_MOD_PRESS,
+  ButtonCombo.K_MOD_HOLD,
+  ButtonCombo.K_MOD_RELEASE,
+]
 
 # 2-move combos
 for c1, c2 in clean_combos(combinations([m for m in ButtonCombo if m not in EXCLUDED_MOVES], 2)):
