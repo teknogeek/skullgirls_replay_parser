@@ -1,4 +1,4 @@
-from models.button_combo import ButtonCombo
+from models.button_combo import ButtonCombo, GenericButtonCombo
 from models import Game, Move, Direction, Player, Fighter, FighterType
 
 def main():

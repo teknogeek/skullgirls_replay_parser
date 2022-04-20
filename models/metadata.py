@@ -23,33 +23,37 @@ class FighterType(Enum):
   VALENTINE = 'Valentine'
 
 class Fighter:
-  fighter_type: FighterType
-  color: int = 1
-  voice_option: VoiceOption = VoiceOption.ENGLISH
-  transition_number: int = 0
-
-  def __init__(self, fighter_type: FighterType) -> None:
+  def __init__(self,
+    fighter_type: FighterType,
+    voice_option: VoiceOption = VoiceOption.ENGLISH,
+    transition_number: int = 0
+  ) -> None:
     self.fighter_type = fighter_type
+    self.color: int = 1
+    self.voice_option = voice_option
+    self.transition_number = transition_number
 
 class Player:
-  name: str
-  fighters: list[Fighter]
-
   def __init__(self, name: str, fighters: list[Fighter]) -> None:
     self.name = name
     self.fighters = fighters
 
 class GameMetadata:
-  world: str = 'Maple_Crest'
-  num_rounds: int = 1
-  match_length: int = 99
-
-  RNG0: int = 284802
-  RNG1: int = -560138391
-
-  player_one: Player
-  player_two: Player
-
-  def __init__(self, player_one: Player, player_two: Player) -> None:
+  def __init__(self,
+    player_one: Player,
+    player_two: Player,
+    world: str = 'Maple_Crest',
+    num_rounds: int = 1,
+    match_length: int = 99,
+    RNG0: int = 284802,
+    RNG1: int = -560138391
+  ) -> None:
     self.player_one = player_one
     self.player_two = player_two
+
+    self.world = world
+    self.num_rounds = num_rounds
+    self.match_length = match_length
+
+    self.RNG0 = RNG0
+    self.RNG1 = RNG1

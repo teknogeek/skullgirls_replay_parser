@@ -5,11 +5,10 @@ from struct import pack
 RND_MAGIC = b'\x31\x30\x02'
 
 class Game:
-  moves: list[Move] = []
-  metadata: GameMetadata = None
-
   def __init__(self, player_one_name: str, player_two_name: str) -> None:
     self.metadata = GameMetadata(player_one_name, player_two_name)
+    self.moves: list[Move] = []
+
 
   def add_frame(self, player_one_move: Move, player_two_move: Move) -> None:
     self.moves += [player_one_move, player_two_move]
